@@ -4,6 +4,7 @@
  * Version_No		Date			Author  	Reason for Modification
  * 1.0			15-Nov-2015     	Pavan		Initial Version
  * 1.1			26-Nov-2015		Sandeep		Changing the way in which the methods are retireved.
+ * 1.2			26-Nov-2015		Pavan		Removed one extra hardcoded filepaths and removed space in starting of each line in output
  */
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +17,8 @@ public class Find_Input_Specific_Methods
 {
   public static void main(String[] args) throws Exception
   {
-	File base_folder = new File("//home//pavan//aprof-outputs");
+  	String file_path = "//home//pavan//aprof-outputs";
+	File base_folder = new File(file_path);
 	File[] input_folders = base_folder.listFiles();
 	String line;
 	String method;
@@ -33,7 +35,7 @@ public class Find_Input_Specific_Methods
 		//We are removing the path before adding it to the LinkedHashMap, so that the output looks
 		//good.
 		
-		curr_folder = curr_folder.replace("//home//pavan//aprof-outputs", " ");
+		curr_folder = curr_folder.replace(file_path, "");
 		temp= new HashSet<>();
 		input_methods_mapping.put(curr_folder, temp);
 		for (File aprof_file : aprof_output) 
