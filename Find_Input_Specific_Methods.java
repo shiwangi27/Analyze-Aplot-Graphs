@@ -28,6 +28,11 @@ public class Find_Input_Specific_Methods
 		// opening each file in current folder 
 		File[] aprof_output = folder.listFiles();
 		curr_folder = folder.toString();
+		
+		//We are removing the path before adding it to the LinkedHashMap, so that the output looks
+		//good.
+		
+		curr_folder = curr_folder.replace("//home//pavan//aprof-outputs", " ");
 		temp= new HashSet<>();
 		input_methods_mapping.put(curr_folder, temp);
 		for (File aprof_file : aprof_output) 
@@ -38,10 +43,22 @@ public class Find_Input_Specific_Methods
 			{
 				if(line.charAt(0)=='r')
 				{
-					method = line.split(" ")[1];
-					method = method.substring(1, method.length()-1);
-					input_methods_mapping.get(curr_folder).add(method);
-					//System.out.println(method);
+					//Only take methods that are in our code base, eliminating the ones obtained
+					//from third party.
+					if(line.contains("linuxdcpp/linuxdcpp") && !line.contains("<"))
+					{
+						method = line.split("\"")[1];
+						
+						//Splitting the argumnets and taking only the method names.
+						method = method.split("\\(")[0];
+						method = method.replace("dcpp::","");
+						//method = method.substring(1, method.length()-1);
+						if(!method.isEmpty()){
+							input_methods_mapping.get(curr_folder).add(method);
+							//System.out.println(method);
+						}
+					}
+					
 				}
 			}
 			br.close();
